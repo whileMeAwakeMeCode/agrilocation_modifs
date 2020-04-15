@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
 const customerSchema= mongoose.Schema({
-    title:{type:String,required:true},
-    name:{type:String,required:true},
-    firstAddress:{type:String,required:true},
-    secondAddress:{type:String,required:true},
-    thirdAddress:{type:String,required:true},
-    postal:{type:String,required:true},
-    city:{type:String,required:true},
-    phone:{type:String,required:true},
-    cellPhone:{type:String,required:true},
-    siren:{type:String,required:true},
-    email:{type:String,required:true},
+    title:{type:String,required:false},
+    name:{type:String,required:false},
+    firstAddress:{type:String,required:false},
+    secondAddress:{type:String,required:false},
+    thirdAddress:{type:String,required:false},
+    postal:{type:String,required:false},
+    city:{type:String,required:false},
+    phone:{type:String,required:false},
+    cellPhone:{type:String,required:false},
+    siren:{type:String,required:false},
+    email:{type:String,required:false},
 });
 
 module.exports = mongoose.model('customers',customerSchema);
