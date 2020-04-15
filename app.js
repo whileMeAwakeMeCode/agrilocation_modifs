@@ -31,6 +31,7 @@ app.post('/customer', (req, res, next) => {
     const customer = new Customer({
       ...req.body
     });
+    console.log('customer : ',customer);
     customer.save()
       .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
       .catch(error => res.status(400).json({ error }));
