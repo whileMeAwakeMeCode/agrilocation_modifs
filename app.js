@@ -37,7 +37,7 @@ app.post('/customer', (req, res, next) => {
   });
 
 app.use((req, res) => {
-    res.status(200).end('Terminé');
+    res.status(200).end('Success');
   console.log('Réponse envoyée avec succès !');
 });
 
