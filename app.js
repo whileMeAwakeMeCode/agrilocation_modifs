@@ -27,7 +27,7 @@ app.get('/',(req, res, next) => {
 });
 
 app.post('/customer', (req, res, next) => {
-    delete req.body._id;
+    //delete req.body._id;
     const customer = new Customer({
       ...req.body
     });

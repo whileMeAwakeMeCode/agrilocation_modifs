@@ -14,4 +14,4 @@ const customerSchema= mongoose.Schema({
     email:{type:String,required:false},
 });
 
-module.exports = mongoose.model('customers',customerSchema);
+module.exports = mongoose.model('customer',customerSchema);
