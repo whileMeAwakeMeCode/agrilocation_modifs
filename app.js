@@ -36,13 +36,13 @@ app.post('/', (req, res, next) => {
     //delete req.body._id;
     console.log('body : ',req.body);
     res.status(201).json({message:req.body});
-    /*const customer = new Customer({
+    const customer = new Customer({
       ...req.body
     });
    
     customer.save()
       .then(() => res.status(201).json({ message: 'Objet enregistré !', body:req.body}))
-      .catch(error => res.status(400).json({ error }));*/
+      .catch(error => res.status(400).json({ error }));
 
     next();
   });
