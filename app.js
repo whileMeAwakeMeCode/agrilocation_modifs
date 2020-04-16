@@ -33,7 +33,7 @@ app.post('/customer', (req, res, next) => {
     });
    
     customer.save()
-      .then(() => res.status(201).json({ message: 'Objet enregistré !', customer:customer}))
+      .then(() => res.status(201).json({ message: 'Objet enregistré !', customer:req.body}))
       .catch(error => res.status(400).json({ error }));
   });
 
