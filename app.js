@@ -35,7 +35,7 @@ app.get('/',(req, res, next) => {
 app.post('/', (req, res, next) => {
     //delete req.body._id;
     //console.log('body : ',req.body);
-    res.status(201).json({message:req.body});
+    res.status(201).json({message:req.body.config.data});
     /*const customer = new Customer({
       ...req.body
     });
