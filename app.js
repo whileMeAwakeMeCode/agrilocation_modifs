@@ -1,23 +1,46 @@
+//const Env = require('dotenv').config() 
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const Customer = require('./models/customer');
+const cors = require('cors');
+//const multer = require('multer');
+//const multerS3 = require('multer-s3');
+//const aws = require('aws-sdk');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://mikl_LG:Rakord.2018$@cluster0-tfntu.mongodb.net/test?retryWrites=true&w=majority',
-{ useNewUrlParser: true,
-useUnifiedTopology: true })
-.then(() => console.log('Connexion à MongoDB réussie !'))
-.catch(() => console.log('Connexion à MongoDB échouée !'));
+/*aws.config.update({
+  accessKeyId:process.env.S3_ACCESS_KEY_ID,  
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY, 
+  region:process.env.S3_REGION        
+})
 
-/**CORS POLICY */
+const s3 = new aws.S3();
+const upload = multer({
+  storage:multerS3({
+      s3,
+      bucket:process.env.S3_MEDIAS_BUCKET,    
+      contentType:multerS3.AUTO_CONTENT_TYPE,
+      acl:'public-read',
+      metadata:function(req,file,callback){callback(null,{fieldName:file.fieldname})},
+      key:function(req,file,callback){callback(null,'inspekt_'+Date.now())},
+  })
+});*/
+
+app.use((req,res,next)=>{
+  if(req.originalUrl === '/favicon.ico'){
+      res.status(204).json({nope:true});
+  }else{
+      next();
+  }
+})
+
+/// enable CORS ///
+app.use(cors());
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    next();
-  });
+    res.header('Access-Control-Allow-Origin', "*"); 
+    res.header('Access-Control-Allow-Headers', "Content-Type, X-Requested-With, Origin, Accept");
+    next()
+})
 
 app.use(bodyParser.urlencoded({ 
     parameterLimit: 100000,
@@ -32,10 +55,12 @@ app.get('/',(req, res, next) => {
     next();
 });
 
-app.post('/', (req, res, next) => {
+app.post('/', 
+//upload.array('filedata'),
+(req, res, next) => {
     //delete req.body._id;
     //console.log('body : ',req.body);
-    res.status(201).json({message:req.body.config.data});
+    res.status(201).json({message:req.body});
     /*const customer = new Customer({
       ...req.body
     });
