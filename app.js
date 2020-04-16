@@ -37,11 +37,11 @@ app.post('/', (req, res, next) => {
     console.log('body : ',req.body);
     //res.status(201).json({message:req.body});
     const customer = new Customer({
-      ...req.body
+      ...req.data
     });
    
     customer.save()
-      .then(() => res.status(201).json({ message: 'Objet enregistré !', body:req.body}))
+      .then(() => res.status(201).json({ message: 'Objet enregistré !', body:req.data}))
       .catch(error => res.status(400).json({ error }));
 
     next();
