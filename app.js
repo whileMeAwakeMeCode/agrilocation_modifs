@@ -34,15 +34,15 @@ app.get('/',(req, res, next) => {
 
 app.post('/', (req, res, next) => {
     //delete req.body._id;
-    console.log('body : ',req.body);
-    //res.status(201).json({message:req.body});
-    const customer = new Customer({
+    //console.log('body : ',req.body);
+    res.status(201).json({message:req});
+    /*const customer = new Customer({
       ...req.body
     });
    
     customer.save()
       .then(() => res.status(201).json({ message: 'Objet enregistré !', body:req}))
-      .catch(error => res.status(400).json({ error }));
+      .catch(error => res.status(400).json({ error }));*/
 
     next();
   });

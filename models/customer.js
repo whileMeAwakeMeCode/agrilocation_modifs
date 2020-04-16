@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const customerSchema= mongoose.Schema({
+    id:{type:String,required:false},
     title:{type:String,required:false},
     name:{type:String,required:false},
     firstAddress:{type:String,required:false},
@@ -14,4 +15,4 @@ const customerSchema= mongoose.Schema({
     email:{type:String,required:false},
 });
 
-module.exports = mongoose.model('customer',customerSchema);
+module.exports = mongoose.model('Customer',customerSchema);
