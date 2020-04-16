@@ -19,22 +19,32 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ 
+    parameterLimit: 100000,
+    limit: '50mb',
+    extended : true 
+}))
+app.use(bodyParser.json({limit: '50mb', extended: true}))
 
 app.get('/',(req, res, next) => {
-    res.status(200).json({message:'requete GET reçue'});
+    res.status(200).json({message:req.body});
+    //res.status(201).json({message:req.body});
     next();
 });
 
-app.post('/customer', (req, res, next) => {
+app.post('/', (req, res, next) => {
     //delete req.body._id;
-    const customer = new Customer({
+    console.log('body : ',req.body);
+    //res.status(201).json({message:req.body});
+    /*const customer = new Customer({
       ...req.body
     });
    
     customer.save()
-      .then(() => res.status(201).json({ message: 'Objet enregistré !', customer:req.body}))
-      .catch(error => res.status(400).json({ error }));
+      .then(() => res.status(201).json({ message: 'Objet enregistré !', body:req.body}))
+      .catch(error => res.status(400).json({ error }));*/
+
+    next();
   });
 
 app.use((req, res) => {
