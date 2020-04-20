@@ -2,83 +2,43 @@ const Env = require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const agrilocationRoutes = require('./routes/agrilocation.js');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const aws = require('aws-sdk');
 
 const app = express();
 
-aws.config.update({
-  accessKeyId:process.env.S3_ACCESS_KEY_ID,  
-  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY, 
-  region:process.env.S3_REGION        
-})
-
-const s3 = new aws.S3();
-
-const uploadFile = (req, res, next)=>{
-    console.log('body : ',req.body);
-
-      s3.putObject(
-        {
-          Bucket:'inspekt-prod',
-          Key:'AGRILOCATION/booking', //2 paramètres obligatoires pour toute méthode s3 (/ inplicite entre Bucket et Key)
-          Body:JSON.stringify(req.body) // uniquement nécessaire pour les requêtes POST
-        },
-        (error,response)=>{
-            res.status(
-              error ? 400 : 201
-            ).json(
-              {error,response}
-            )
-          
-        })
-}
-
-const getFile = (req, res, next)=>{
-
-    s3.getObject(
+/*const addMachine = (req, res, next)=>{
+    s3.putObject(
       {
         Bucket:'inspekt-prod',
-        Key:'AGRILOCATION/booking', //2 paramètres obligatoires pour toute méthode s3 (/ inplicite entre Bucket et Key)
+        Key:'AGRILOCATION/machine_catalog', //2 paramètres obligatoires pour toute méthode s3 (/ inplicite entre Bucket et Key)
+        Body:JSON.stringify(req.body) // uniquement nécessaire pour les requêtes POST
       },
       (error,response)=>{
           res.status(
             error ? 400 : 201
-          ).send(
-            {error,response:response.Body.toString()}
-          )
-        
+          ).json(
+            {error,response}
+          )      
       })
-}
+}*/
 
-const getCustomer_catalog = (req, res, next)=>{
-
+/*const getCustomers = (req, res, next)=>{
   s3.getObject(
     {
       Bucket:'inspekt-prod',
       Key:'AGRILOCATION/customer_catalog', //2 paramètres obligatoires pour toute méthode s3 (/ inplicite entre Bucket et Key)
     },
-    (error,response)=>{
+    (error,data)=>{
         res.status(
           error ? 400 : 201
         ).send(
-          {response:response.Body.toString()}
+          {data:JSON.parse(data.Body.toString())}
         )
-      
     })
-}
-
-const upload = multer({
-  storage:multerS3({
-      s3,
-      bucket:process.env.S3_MEDIAS_BUCKET,    
-      contentType:multerS3.AUTO_CONTENT_TYPE,
-      acl:'public-read',
-      metadata:function(req,file,callback){callback(null,{fieldName:file.fieldname})},
-      key:function(req,file,callback){callback(null,'inspekt_'+Date.now())},
-  })
-});
+}*/
 
 app.use((req,res,next)=>{
   if(req.originalUrl === '/favicon.ico'){
@@ -107,8 +67,25 @@ app.use(bodyParser.json({
   extended: true
 }))
 
-app.get('/get/customer_catalog',getCustomer_catalog);
+const s3 = new aws.S3();
 
-app.post('/post',uploadFile);
+const upload = multer({
+  storage:multerS3({
+      s3,
+      bucket:process.env.S3_MEDIAS_BUCKET,    
+      contentType:multerS3.AUTO_CONTENT_TYPE,
+      acl:'public-read',
+      metadata:function(req,file,callback){callback(null,{fieldName:file.fieldname})},
+      key:function(req,file,callback){callback(null,'inspekt_'+Date.now())},
+  })
+});
 
-module.exports = app;
+//app.use('/',agrilocationRoutes);
+
+app.post('/post/addMachineImage',upload.array('filedata'),function(req,res){
+  console.log('reqfiles : ',req.files);
+  console.log('reqbody : ',req.body);
+  res.status(200).send(req.files);
+});
+
+app.listen(4001);
