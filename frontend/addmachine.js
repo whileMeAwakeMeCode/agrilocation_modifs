@@ -96,11 +96,12 @@ export default function Addmachine({titleColor,dealerColor,dealerBackgroundColor
       });
 
       const {data, status} = axiosResponse
-      const img = data && data.length && data[0]
+      const img = (data && data.length && data[0]) || {}
+      const {location} = img
 
       const imageurl = await Promise.resolve(
         status === 200
-        ? img.location
+        ? location
         : ""
       );
               
