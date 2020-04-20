@@ -88,4 +88,4 @@ app.post('/post/addMachineImage',upload.array('filedata'),function(req,res){
   res.status(200).send(req.files);
 });
 
-app.listen(4001);
+app.listen(4001, () => console.log(`Agrilocation server running on 4001`));
